@@ -72,6 +72,12 @@ brand colors:
 Colors can be defined as hex colors (3 or 6 hex digits) or as rgb() colors in css syntax. Since the hash symbol in YAML 
 means "comment", hex colors need to be quoted.
 
+```yaml
+short hex color: '#abc'
+long hex color: '#aabbcc'
+rgb color: rgb(255,0,0)
+```
+
 ## Shortcomings
 
 - The value syntax is confusing
