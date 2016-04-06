@@ -1,10 +1,13 @@
-# opencolor file format 1.0
+# Open Color Format Specification
 
-For a documentation of the original format, see [original](original.md).
+## Version/Author
+
+V1.0 (2015-04-06)
+Author: [Jan Krutisch](mailto:jan@krutisch.de)
 
 ## File format
 
-The format is loosely based on the ideas of YAML, but since we've diverted from valid YAML, it is not parseable by YAML parsers anymore.
+The format is loosely based on the ideas of YAML, but since we've diverted from valid YAML for a few special cases, it is not parseable by YAML parsers anymore.
 
 The character encoding is assumed to be UTF-8 at all times.
 
@@ -33,6 +36,11 @@ paletteName:
 
 These palettes can be nested. The format does not currently impose a limit on nesting depth.
 
+## Nesting of Groups
+
+In theory, the format allows deep nesting of groups into groups into groups. In practice, it usually doesn't
+make any sense to nest a lot deeper than 1-2 levels.
+
 ## Meta Data
 
 If a key contains a slash, the key is considered meta data. For example, this defines a palette author:
@@ -55,9 +63,17 @@ reds:
 Metadata can be grouped as well:
 
 ```
-  meta/
-    author: Jan Krutisch
+  meta/:
+    author: Astrid Lindgren
 ```
+
+Parser implementations are expected to flatten the structure of grouped metadata into a simple Hash like structure with
+the keys joined by one (and only one) slash, so that the above meta group would look like this(expressed in JSON):
+
+```json
+{"meta/author": "Astrid Lindgren"}
+```
+:exclamation: We're thinking about allowing a short form that omits the colon for grouped metadata, but this is not decided yet.
 
 Metadata can happen on Palettes and Colors:
 
@@ -90,6 +106,8 @@ shades: =reds // referencing groups
 
 ### References as URLs
 
+:exclamation: Currently not implemented by the [reference parser](https://github.com/opencolor-tools/js-oco-parser).
+
 Ideally, References could also be resolved as URLs, in a similar way to URL references in stylesheets. Since this is largely implementation dependent (and, in the case of JavaScript, even runtime dependent), the URL resolving is not part of this spec and will not be implemented in the first version of the reference parser. The syntax will look like this:
 
 ```
@@ -97,13 +115,22 @@ reds: =url(http://design.google.com/colors.oco#reds) // referencing groups via u
 blues: =url(file://./pastells.oco#blues) // referencing groups via url, file protocol
 ```
 
+### Special Metadata values
+
+As metadata is meant to be used to configure views (for example, for our Mac OS X color picker), it makes sense to treat some metadata as typed values. These are:
+
+- Booleans (if 'true' or 'false')
+- Numbers (treated as floats)
+- Color values (in any color space)
+- References
+
 ## Color Definitions
 
 Colors can be defined as hex colors (3, 4, 6 or 8 hex digits) or in a generic color space format. Interpretation of these formats is up to the consumer. The hex code, as widely used in web technology and beyond, is treated specially as it doesn't need the "function" syntax.
 
 A color can have multiple definitions, but they must be non-ambiguous. A parser should just parse them all into a map like structure with the color space names as keys and the full color definition as value.
 
-We assume that for the most cases, rgb(a) or hex colors will be used and expect most consuming libraries to implement special handling and validation of these color definitions. For many cases it might be useful to document additional color definitions such as PANTONE names, RAL numbers or even just CYMK values. as long as you define your own color space and keep the needed values in parentheses, you can know yourself out and define what ever you want.
+We assume that for the most cases, rgb(a), hsl(a) or hex colors will be used and expect most consuming libraries to implement special handling and validation of these color definitions. For many cases it might be useful to document additional color definitions such as PANTONE names, RAL numbers or even just CYMK values. as long as you define your own color space and keep the needed values in parentheses, you can know yourself out and define what ever you want.
 
 ```
 short hex color: '#abc'
@@ -120,3 +147,15 @@ phantasierot:
   RAL(12030)
   mixing-rule(Yellow: 765 g, Red 032: 26 g, Black: 11 g, transp. White: 198 g)  
 ```
+
+## Comments
+
+Comments are using the JavaScript line comment syntax, like this:
+
+```
+a group: // this is a comment on a group
+  a color: #ffe // colors can be commented as well
+// comments can appear on their own lines as well.
+```
+
+Comments are meant to completely ignored by any parser implementation. If you want annotate OCO data, please use meta data namespaces.

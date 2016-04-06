@@ -13,7 +13,7 @@
   - PANTONE(Serenity)
   - PANTONE(15-3919)
 * Colors have names
-* Colors can be sorted into named groups or palettes
+* Colors can be grouped into named groups or palettes
 
 ## Should
 
