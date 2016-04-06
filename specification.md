@@ -106,7 +106,7 @@ shades: =reds // referencing groups
 
 ### References as URLs
 
-:exclamation: Currently not implemented by the [reference parser](https://github.com/opencolor-tools/js-oco-parser).
+:exclamation: Currently not implemented by the [reference parser](https://github.com/opencolor-tools/opencolor-js.
 
 Ideally, References could also be resolved as URLs, in a similar way to URL references in stylesheets. Since this is largely implementation dependent (and, in the case of JavaScript, even runtime dependent), the URL resolving is not part of this spec and will not be implemented in the first version of the reference parser. The syntax will look like this:
 
