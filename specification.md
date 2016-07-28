@@ -2,7 +2,7 @@
 
 ## Version/Author
 
-V1.0 (2015-04-06)
+V1.1 (2016-07-28)
 Author: [Jan Krutisch](mailto:jan@krutisch.de)
 
 ## File format
@@ -16,7 +16,7 @@ The character encoding is assumed to be UTF-8 at all times.
 Colors can be defined in two ways:
 
 ```
-colorName: <color definition>, <color definition>
+colorName: <color definition>
 
 # or
 
@@ -64,6 +64,13 @@ Metadata can be grouped as well:
 
 ```
   meta/:
+    author: Astrid Lindgren
+```
+
+It is possible to leave out the colon if the group name ends in a slash:
+
+```
+  meta/
     author: Astrid Lindgren
 ```
 
