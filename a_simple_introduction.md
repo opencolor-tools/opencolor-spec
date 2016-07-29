@@ -1,8 +1,6 @@
 # A simple introduction to the OCO format
 
-Author: jan krutisch <jan@krutisch.de>
-
-This text is meant as a less rigid, more human friendly introduction to the OCO format than the spec which obviously focuses on clarity and detail.
+This text is meant to be a less rigid, more human friendly introduction to the OCO format than the spec which obviously focuses on clarity and detail.
 
 ## Colors
 
